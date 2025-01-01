@@ -1,0 +1,74 @@
+{
+    "configurations": [
+        {
+            "name": "Python Debugger (Fab): Runserver",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/manage.py",
+            "args": [
+                "runserver"
+            ],
+            "django": true,
+            "autoStartBrowser": false,
+        },
+        {
+            "name": "Django Test: Alphonse Journey",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/manage.py",
+            "args": [
+                "test",
+                "_documentation.user_journeys.alphonse"
+            ],
+            "django": true,
+            "justMyCode": true,
+            "env": {
+                "DEBUG": "True"
+            }
+        },
+        {
+            "name": "Django Test: payment_term",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/manage.py",
+            "args": [
+                "test",
+                "payment_term.tests.payment_structure"
+            ],
+            "django": true,
+            "justMyCode": true,
+            "env": {
+                "DEBUG": "True"
+            }
+        },
+        {
+            "name": "FlexUpModel: By system",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/manage.py",
+            "args": [
+                "test",
+                "core.tests.flexup_model_by_system"
+            ],
+            "django": true,
+            "justMyCode": true,
+            "env": {
+                "DEBUG": "True"
+            }
+        },
+        {
+            "name": "Django Test: all",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/manage.py",
+            "args": [
+                "test",
+            ],
+            "django": true,
+            "justMyCode": true,
+            "env": {
+                "DEBUG": "True"
+            }
+        }
+    ]
+}

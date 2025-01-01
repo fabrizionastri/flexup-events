@@ -1,0 +1,101 @@
+{# templates/event.html #}
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<div>
+
+    <h2> {% if event %} Event: {{ event.name }} {% else %} Create a new event {% endif %} </h2>
+    <div class="d-flex justify-content-end ">
+      {% if event %}
+      <button id="edit-button" onclick="toggleEditMode()" class="btn btn-outline-secondary">Edit</button>
+      {% endif %}
+    </div>
+    <form method="POST" id="event-form" {% if event %} data-readonly="true" {% endif %}>
+        {% csrf_token %}
+        {{ form.as_p }}
+        
+        {# Save button, hidden in read-only mode #}
+        <div class="d-flex justify-content-between">
+            <button type="submit" id="save-button" > {% comment %} style="display:none;"> {% endcomment %}
+              Save
+            </button>
+
+          </div>
+        </form>
+</div> 
+
+
+<script>
+  function toggleEditMode() {
+    const form = document.getElementById('event-form');
+    const saveButton = document.getElementById('save-button');
+    console.log('toggleEditMode to: ', form.getAttribute('data-readonly'));
+    // Toggle the data-readonly attribute
+    const isCurrentlyReadOnly = form.getAttribute('data-readonly') === 'true';
+    form.setAttribute('data-readonly', !isCurrentlyReadOnly);
+
+    // Enable/disable fields accordingly
+    Array.from(form.elements).forEach(element => {
+      if (element.name !== 'csrfmiddlewaretoken') {
+        element.disabled = isCurrentlyReadOnly ? false : true;
+      }
+    });
+    
+    // Show/hide the save button
+    saveButton.style.display = isCurrentlyReadOnly ? 'inline-block' : 'none';
+  }
+
+  // On page load, if an event exists, ensure fields start disabled
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('event-form');
+    if (form.getAttribute('data-readonly') === 'true') {
+      Array.from(form.elements).forEach(element => {
+        if (element.name !== 'csrfmiddlewaretoken') {
+          element.disabled = true;
+        }
+      });
+    }
+
+    // Add event listener to the slug element
+    const slugElement = document.getElementById('id_slug');
+    if (slugElement) {
+      slugElement.addEventListener('click', (event) => {
+        event.preventDefault();
+        const eventurl = window.location.href + event.target.value; 
+        copyToClipboard(eventurl);
+        showNotification('URL copied to clipboard!');
+      });
+    }
+  });
+
+  function copyToClipboard(text) {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+  }
+
+  // Function to show a notification
+  function showNotification(message) {
+    const notification = document.createElement('div');
+    notification.innerText = message;
+    notification.style.position = 'fixed';
+    notification.style.bottom = '10px';
+    notification.style.right = '10px';
+    notification.style.backgroundColor = '#4CAF50';
+    notification.style.color = 'white';
+    notification.style.padding = '10px';
+    notification.style.borderRadius = '5px';
+    document.body.appendChild(notification);
+    setTimeout(() => {
+      document.body.removeChild(notification);
+    }, 3000);
+  }
+</script>
+
+{% endblock %}

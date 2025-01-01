@@ -1,0 +1,263 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Open+Sans:wght@400;700&display=swap');
+/* 
+* {
+  box-sizing: border-box;
+} */
+
+html {
+  font-family: 'Open Sans', 'Lato', sans-serif;
+}
+
+/* body {
+  margin: 80px;
+  color: rgb(27, 41, 122);
+} */
+
+:root {
+  --flexup-dark-blue: #1F3F5F;
+  --flexup-green: #70AD47;
+  --flexup-orange: #ED7D31;
+  --flexup-light-blue: #5B9BD5;
+}
+
+.colored-background {
+  color: var(--flexup-dark-blue);
+}
+
+.colored-background {
+  /* background-color: #1f4e79; */
+  /* color: rgb(255, 255, 255); */
+  color: var(--flexup-dark-blue);
+}
+
+/* Media */
+
+/* Extra small devices (phones, below 576px) */
+main {
+  padding: 40px;
+  /* align center    */
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: center;
+
+  /* Default for mobile */
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+  main {
+    padding: 20px;
+  }
+
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  main {
+    padding: 10px;
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  main {
+    padding: 15px;
+  }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  main {
+    padding: 20px;
+  }
+}
+
+/* Main content */
+
+#mainContent {
+  transition: margin-left 0.3s ease;
+}
+
+#mainContent.hidden { margin-left: 0; }
+#mainContent.mini { margin-left: 80px; }
+#mainContent.full { margin-left: 250px; }
+
+/* Titles */
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 30px;
+}
+
+h1,
+h2,
+h3 {
+  font-family: 'Lato', sans-serif;
+  font-weight: bold;
+}
+
+/*  Navbar */
+
+nav {
+  height: 80px;
+  justify-content: left;
+  align-items: center;
+  padding: 20px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  gap: 20px;
+  z-index: 2000;
+  /* margin-bottom: 80px; */
+}
+
+nav>a {
+  text-decoration: none;
+  color: rgb(27, 103, 133);
+  font-weight: bold;
+}
+
+nav>a:hover,
+nav>a:active {
+  color: #cf79f1;
+}
+
+.navbar {
+  padding: 10px;
+  border-bottom: 1px solid #c5c5c5;
+}
+
+.navbar {
+  padding: 10px;
+  border-bottom: 1px solid #c5c5c5;
+}
+
+
+/* Forms */
+form {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+}
+
+/* in the screen width is less than 800 px reduct padding to 10px */
+@media (max-width: 800px) {
+  form {
+    padding: 10px;
+  }
+}
+
+form>* {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
+form>*:last-child {
+  margin-bottom: 0;
+}
+
+form label {
+  width: 140px;
+  height: 30px;
+  margin-right: 10px;
+  padding: 5px;
+  align-self: flex-start;
+}
+
+/* default height for text area is 200px, minimum is 100px */
+form textarea {
+  height: 100px;
+  min-height: 50px;
+  max-height: 200px;
+}
+
+form input, textarea, select {
+  color: var(--flexup-dark-blue);
+  width: 400px;
+  outline: 1px solid #80bdff;
+  border:none;
+  border-radius: 3px;
+  padding: 5 10px;
+  /* background-clip: padding-box;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; */
+}
+
+form input:disabled,
+form input:read-only,
+form textarea:disabled,
+form select:disabled {
+  outline-color:rgb(255, 255, 255);
+  background-color:white;
+}
+
+form>*>input:enabled:hover,
+textarea:enabled:hover,
+select:enabled:hover,
+form>*>input:focus,
+textarea:focus,
+select:focus {
+  /* background-color: #fff; */
+  /* outline: 0; */
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+form>*>input[type="datetime-local"],
+form>*>input[type="date"] {
+  width: 200px;
+}
+
+form>*>input {
+  height: 30px;
+}
+
+.errorlist {
+  color: red;
+  font-size: 0.8rem;
+}
+
+.debugBtn {
+  border: none;
+  border-radius: 3px;
+}
+
+
+button {
+  padding: 5 10px;
+  width: 150px;
+  height: 35px;
+  justify-content: center;
+  border: none;
+  border-radius: 3px;
+  background-color: var(--flexup-light-blue);
+  color: white;
+  cursor: pointer;
+}
+
+#edit-button {
+  margin: 0 10px;
+}
+
+
+/* if screen size is less than 1000px, hide nav-center */
+#nav-center {
+  display: none;
+}
+
+/* if screen size is less than 1000px, hide nav-center */
+
+/* Wireframe during development */ 
+
+/* div,
+section,
+main,
+header,
+footer,
+form>*>label,
+form>p, form>div,
+form {
+  border: 0.5px solid rgba(194, 2, 252, 0.2) !important;
+  background-color: rgba(129, 35, 252, 0.04) !important;
+} */

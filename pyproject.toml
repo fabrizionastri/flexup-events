@@ -1,7 +1,10 @@
 [project]
-name = "FlexUp Events"
+name = "flexup_events"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = ["django>=5.1.4"]
+dependencies = [
+    "django>=5.1.4",
+    "redgreenunittest>=0.1.1",
+]

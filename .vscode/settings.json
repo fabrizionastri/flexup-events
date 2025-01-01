@@ -1,0 +1,92 @@
+{
+  "editor.tabSize": 4,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": true,
+  // Python configuration
+  "python.languageServer": "Pylance",
+  // "python.analysis.typeCheckingMode": "basic",  
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.completeFunctionParens": true,
+  // "python.analysis.inlayHints.functionReturnTypes": true,
+  // "python.analysis.inlayHints.variableTypes": true, 
+  // Critical for Rye + WSL: Point to the correct interpreter and site-packages
+  // "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python", // for WSL environments
+  // "python.defaultInterpreterPath": "${workspaceFolder}\\.venv\\Scripts\\python.exe", // for Windows environments
+  "python.analysis.autoSearchPaths": true,
+  "python.analysis.extraPaths": [
+    "${workspaceFolder}",
+    // "./venv/lib/python3.11/site-packages" // for WSL environments
+    // "./.venv/Lib/site-packages" //  for Windows environments
+    "${workspaceFolder}/.venv/Lib/site-packages" //  for Windows environments
+  ],
+  // Django specific settings
+  "python.analysis.diagnosticMode": "workspace",
+  "python.analysis.ignore": [
+    // "**/migrations/**",
+    "_docs/**",
+  ],
+  // Testing configuration
+  "python.envFile": "${workspaceFolder}/.env",
+  "python.testing.unittestArgs": [
+    "-v",
+    "-s",
+    ".",
+    "-p",
+    "test*.py",
+    "-p",
+    "tests/*.py",
+    "--top-level-directory=${workspaceFolder}"
+  ],
+  "python.testing.pytestEnabled": false,
+  "python.testing.unittestEnabled": true,
+  "python.testing.nosetestsEnabled": false,
+  "python.testing.cwd": "${workspaceFolder}",
+  "python.testing.unittestEnv": {
+    "PYTHONPATH": "${workspaceFolder}",
+    "DJANGO_SETTINGS_MODULE": "config.settings"
+  },
+  // Don't auto format on save
+  "editor.formatOnSave": false,
+  // File exclusions
+  "files.exclude": { //  disable any of these lines if you want the corresponding files to be visible in the explorer
+    // "**/__pycache__": true,
+    // "**/migrations": true,
+    // "**/__init__.py": true,
+  },
+  // WSL specific
+  "python.terminal.activateEnvironment": true,
+  "terminal.integrated.env.windows": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "DJANGO_SETTINGS_MODULE": "config.settings",
+    "PYTHONPATH": "${workspaceFolder}"
+  },
+  "terminal.integrated.env.linux": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "DJANGO_SETTINGS_MODULE": "config.settings",
+    "PYTHONPATH": "${workspaceFolder}"
+  },
+  "editor.tokenColorCustomizations": {
+    "comments": "#5e635f", // Change comment color
+    "textMateRules": [
+      {
+        "scope": "string.quoted.docstring.multi.python",
+        "settings": {
+          "foreground": "#529985" // docstring text color
+        }
+      },
+      {
+        "scope": "punctuation.definition.string.begin.python",
+        "settings": {
+          "foreground": "#529985" // beginning triple quotes
+        }
+      },
+      {
+        "scope": "punctuation.definition.string.end.python",
+        "settings": {
+          "foreground": "#529985" // ending triple quotes
+        }
+      }
+    ]
+  },
+  "workbench.editor.enablePreview": false
+}

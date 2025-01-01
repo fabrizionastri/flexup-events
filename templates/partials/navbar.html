@@ -1,0 +1,120 @@
+{#  --------  templates/partials/navbar.html --------- #}
+{% load static %}
+
+<nav class=" navbar navbar-expand-lg bg-body-tertiary shadow-sm container-fluid fixed-top sticky-top justify-content-between" data-bs-theme="light" style="transition: top 0.3s;">
+  
+  {# Nav left: menu button + logo  --#}
+  <div id="nav-left" >
+    <a class="navbar-brand" href="/">
+      <img
+        src="{% static 'img/flexup.svg' %}"
+        alt="FlexUp Icon"
+        height="50"
+        class="d-inline-block"
+      >
+      <img
+        src="{% static 'img/events.svg' %}"
+        alt="Meet"
+        height="50"
+        class="d-inline-block"
+      >
+    </a>
+  </div>
+
+  {# Nav middle: debug & search bar  #}
+  <div id="nav-center" class="mx-auto align-items-center">
+    {# Debug #}
+    <div id="debug" class="mx-3 d-flex align-items-center">
+      <button id="toggleDebug" class="debugBtn">
+        <i class="bi bi-bug"></i>
+      </button>
+      <div id="debugInfo" class="d-none fs-7 lh-1">
+        <span>Debug mode: <span id="debugStatus">Off</span></span>,
+        <span>Edit mode: <span id="navEditModeStatus">Off</span></span>,
+      </div>
+    </div>
+  </div>
+
+ {# Nav right #}
+ <div id="nav-right"  class="mx-3 d-flex align-items-center">
+    {# Links  #}
+    <div id="nav-links"  class="d-flex align-items-center me-3 ">
+      <a href="https://www.flexup.org" class="btn" target="_blank">FlexUp</a>
+      <a href="/event" class="btn btn btn-outline-primary">New event</a>
+
+    </div>
+    
+    
+  </div>
+
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const menuSizeKey = 'menuSize';
+    const debugKey = 'debug';
+
+
+
+    const buttonDebug = document.getElementById('toggleDebug');
+    const debugInfo = document.getElementById('debugInfo');
+
+    const debugStatus = document.getElementById('debugStatus');
+
+    // ----- Helper functions -----
+    const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+    const getLocal = (key) => localStorage.getItem(key);
+    const setLocal = (key, value) => localStorage.setItem(key, value);
+
+
+
+    function getDebugMode() {
+      return getLocal(debugKey) === 'true';
+    }
+
+    function setDebugMode(mode) {
+      setLocal(debugKey, mode);
+    }
+
+    // ----- Single UI update function -----
+    function updateUI() {
+
+
+
+      // Debug mode display
+      if (getDebugMode()) {
+        buttonDebug.style.backgroundColor = 'lightgray';
+        debugInfo.classList.remove('d-none');
+        debugStatus.textContent = 'On';
+      } else {
+        buttonDebug.style.backgroundColor = '';
+        debugInfo.classList.add('d-none');
+        debugStatus.textContent = 'Off';
+      }
+    }
+
+
+
+    function toggleDebugMode() {
+      const nextMode = !getDebugMode();
+      setDebugMode(nextMode);
+      updateUI();
+    }
+
+
+    buttonDebug.addEventListener('click', toggleDebugMode);
+
+    // Event delegation for menu groups
+    document.addEventListener('click', (event) => {
+      if (event.target.matches('.menu-group-toggle')) {
+        const menuGroup = event.target.closest('.menu-group');
+        menuGroup.classList.toggle('open');
+      }
+    });
+    
+    // Initial setup
+    updateUI();
+
+    console.log('Initial debug mode:', getDebugMode());
+  });
+</script>
