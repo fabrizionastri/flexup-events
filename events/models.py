@@ -5,9 +5,9 @@ from uuid import uuid4
 
 
 class Event(models.Model):
-    name = models.CharField(max_length=100, verbose_name='Event Name')
-    start_datetime = models.DateTimeField(verbose_name="Start Date & time", blank=True, null=True)
-    end_datetime = models.DateTimeField(verbose_name="End Date & time", blank=True, null=True)
+    name = models.CharField(max_length=100, verbose_name='Event name')
+    start_datetime = models.DateTimeField(verbose_name="Start date & time", blank=True, null=True)
+    end_datetime = models.DateTimeField(verbose_name="End date & time", blank=True, null=True)
     description = models.TextField(verbose_name='Description', blank=True, null=True)
     location = models.CharField(max_length=200, verbose_name='Location', blank=True, null=True)
     slug = models.SlugField(unique=True, default=uuid4)

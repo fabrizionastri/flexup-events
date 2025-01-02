@@ -1,0 +1,117 @@
+
+{% load custom_filters %}
+
+{% block title %}
+    {{ title }}
+{% endblock title %}
+{% block content %}
+    <table id="sortable-table">
+        <thead>
+            <tr>
+                {% for column in columns %}<th data-name="{{ column.name }}">{{ column.title }}</th>{% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+                <tr data-slug="{{ row.slug }}">
+                    {% comment %} Note: get_idem is a custom filter defined in custom_filters.py {% endcomment %}
+                    {% for col in columns %}<td>{{ row|get_item:col.name }}</td>{% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <a href="{% url 'home' %}">Back to home page</a>
+    <script>
+        // Function to sort table by a specific column
+        function sortTable(table, colIndex, ascending) {
+            const rowsArray = Array.from(table.tBodies[0].rows);
+            const direction = ascending ? 1 : -1;
+
+            // Sort the rows based on the clicked column's content
+            rowsArray.sort((rowA, rowB) => {
+                const cellA = rowA.cells[colIndex].innerText.toLowerCase();
+                const cellB = rowB.cells[colIndex].innerText.toLowerCase();
+
+                if (cellA < cellB) return -1 * direction;
+                if (cellA > cellB) return 1 * direction;
+                return 0;
+            });
+
+            // Append sorted rows to the table body
+            rowsArray.forEach(row => table.tBodies[0].appendChild(row));
+        }
+
+        // Attach click event listeners to the table headers
+        document.addEventListener('DOMContentLoaded', () => {
+            const table = document.getElementById('sortable-table');
+            const headers = table.querySelectorAll('th');
+            const state = { sortCol: null, ascending: true };  // Track current sorting state
+
+            headers.forEach((header, colIndex) => {
+                header.addEventListener('click', () => {
+                    const isAscending = state.sortCol === colIndex ? !state.ascending : true;
+                    state.sortCol = colIndex;
+                    state.ascending = isAscending;
+                    sortTable(table, colIndex, isAscending);
+                });
+            });
+        });
+    </script>
+    <style>
+        th {
+            cursor: pointer;
+        }
+    </style>
+{% endblock content %}
+
+{% block scripts %}
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const table = document.getElementById('sortable-table');
+        const headers = table.querySelectorAll('th');
+        const rows = table.querySelectorAll('tbody tr');
+        const state = { sortCol: null, ascending: true }; // Track sorting state
+
+        // Function to sort table by a specific column
+        function sortTable(table, colIndex, ascending) {
+            const rowsArray = Array.from(table.tBodies[0].rows);
+            const direction = ascending ? 1 : -1;
+
+            rowsArray.sort((rowA, rowB) => {
+                const cellA = rowA.cells[colIndex].innerText.toLowerCase();
+                const cellB = rowB.cells[colIndex].innerText.toLowerCase();
+
+                if (cellA < cellB) return -1 * direction;
+                if (cellA > cellB) return 1 * direction;
+                return 0;
+            });
+
+            rowsArray.forEach(row => table.tBodies[0].appendChild(row));
+        }
+
+        // Attach click event listeners to table headers for sorting
+        headers.forEach((header, colIndex) => {
+            header.addEventListener('click', () => {
+                const isAscending = state.sortCol === colIndex ? !state.ascending : true;
+                state.sortCol = colIndex;
+                state.ascending = isAscending;
+                sortTable(table, colIndex, isAscending);
+            });
+        });
+
+        // Attach click event listeners to table rows for navigation
+        rows.forEach(row => {
+            row.addEventListener('click', () => {
+                const slug = row.getAttribute('data-slug');
+                if (slug) {
+                    const currentUrl = new URL(window.location.href);
+                    currentUrl.pathname += `${slug}/`;
+                    window.location.href = currentUrl.href;
+                }
+            });
+        });
+    });
+
+</script>
+{% endblock scripts %}

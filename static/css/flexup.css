@@ -133,6 +133,41 @@ nav>a:active {
   border-bottom: 1px solid #c5c5c5;
 }
 
+/* Tables  */
+
+table {
+  border-collapse: separate;
+  width: 100%;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  overflow: hidden;
+  border-spacing: 0;
+  /* Ensures no extra space between table cells */
+}
+
+th {
+  background-color: #eee;
+  text-align: left;
+  font-weight: bold;
+  border: none;
+  /* No internal borders */
+}
+
+td {
+  text-align: left;
+  border-top: 1px solid #eee;
+}
+
+th,
+td {
+  padding: 5px;
+  min-width: 150px;
+}
+
+/* when I hover on a row, its background color becomes very light blue */
+tr:hover {
+  background-color: #f0f8ff;
+}
 
 /* Forms */
 form {
@@ -249,8 +284,8 @@ button {
 /* if screen size is less than 1000px, hide nav-center */
 
 /* Wireframe during development */ 
-
-/* div,
+/* 
+div,
 section,
 main,
 header,
