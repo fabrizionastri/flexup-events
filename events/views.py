@@ -1,17 +1,11 @@
-
+#  ------- events/events/views.py 
+from core.utils.print_context import _print_context
 from .models import Event
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import ListView
 from events.forms import EventForm
-
-
-def home(request):
-    return render(request, 'home.html')
-
-class EventCustomListView(ListView):
-    model = Event
-    template_name = 'events_custom.html'   # you can name this file whatever you want
-    context_object_name = 'events'       # default is "object_list"
+from django.http import HttpResponseRedirect
+from django.views.decorators.http import require_POST
 
 
 def events(request):
@@ -32,10 +26,25 @@ def events(request):
 
     return render(request, "events.html", context)
 
+@require_POST
 def delete_event(request, slug):
+    print("Deleting event with slug:", slug)
     event_instance = get_object_or_404(Event, slug=slug)
+    _print_context(event_instance, "slug")
     event_instance.delete()
-    return redirect('events')
+    redirect_url = '/events/'
+    print(f"Redirecting to: {redirect_url}")
+    return HttpResponseRedirect(redirect_url)
+
+
+def home(request):
+    return render(request, 'home.html')
+
+class EventCustomListView(ListView):
+    model = Event
+    template_name = 'events_custom.html'   # you can name this file whatever you want
+    context_object_name = 'events'       # default is "object_list"
+
 
 def event_view(request, slug=None):
     """
@@ -51,7 +60,7 @@ def event_view(request, slug=None):
         form = EventForm(request.POST, instance=event_instance)
         if form.is_valid():
             saved_event = form.save()
-            return redirect('event_view', slug=saved_event.slug)
+            return redirect('events')
     else:
         # GET request: render empty form (create) or filled form (view)
         form = EventForm(instance=event_instance)

@@ -18,24 +18,24 @@
         {{ form.as_p }}
         
         {# Save button, hidden in read-only mode #}
-        <div class="d-flex justify-content-between" id="button-container">
-            <button type="submit" id="save-button" >Save</button>
+        <div class="justify-content-between" id="button-container">
+            <button type="submit" id="save-button" > Save </button>
             {% if event %}
             <button type="button" id="delete-button" class="btn btn-danger" onclick="deleteEvent('{{ event.slug }}')">Delete</button>
             {% else %}
-            <button type="button" id="cancel-button" class="btn btn-outline-secondary" disabled>Cancel</button>
+            <a href="/events/"><button type="button" id="cancel-button" class="btn btn-outline-secondary">Cancel</button></a>
+            
             {% endif %}
           </div>
-      </form>
+    </form>
         <p>data-readonly : <span id="is_readonly">Unknown</span></p>
-  </div> 
-</div> 
 
+</div> 
 
 <script>
   function toggleEditMode() {
     const form = document.getElementById('event-form');
-    const ButtonContainer = document.getElementById('button-container');
+    const buttonContainer = document.getElementById('button-container');
     console.log('toggleEditMode to: ', form.getAttribute('data-readonly'));
     // Toggle the data-readonly attribute
     const isCurrentlyReadOnly = form.getAttribute('data-readonly') === 'true';
@@ -51,13 +51,13 @@
       }
     });
     
-    // Show/hide the save button
-    ButtonContainer.style.display = isCurrentlyReadOnly ? 'inline-block' : 'none';
+    // Show/hide the button container
+    buttonContainer.style.display = isCurrentlyReadOnly ? 'flex' : 'none';
   }
 
   function deleteEvent(slug) {
     if (confirm('Are you sure you want to delete this event?')) {
-      fetch(`/events/${slug}/delete/`, {
+      fetch(`/event/${slug}/delete/`, {
         method: 'DELETE',
         headers: {
           'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
@@ -77,7 +77,7 @@
   // On page load, if an event exists, ensure fields start disabled
   document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('event-form');
-    const ButtonContainer = document.getElementById('button-container');
+    const buttonContainer = document.getElementById('button-container');
     if (form.getAttribute('data-readonly') === 'true') {
       Array.from(form.elements).forEach(element => {
         if (element.name !== 'csrfmiddlewaretoken') {
@@ -88,8 +88,16 @@
     // update the id="is_readonly" span content with the current value of data-readonly
     document.getElementById('is_readonly').innerText = form.getAttribute('data-readonly');
     
-    // Hide the save button initially
-    ButtonContainer.style.display = 'none';
+    console.log('slug:', document.getElementById('id_slug').value);
+    // Hide the button container initially it there is a slug
+    if (event.pk) {
+      console.log("Hiding button container");
+      buttonContainer.style.display = 'none';
+    }
+    else {
+      console.log("Showing button container");
+      buttonContainer.style.display = 'flex';
+    }
     // Add event listener to the slug element
     const slugElement = document.getElementById('id_slug');
     if (slugElement) {
