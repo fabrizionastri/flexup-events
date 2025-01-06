@@ -1,81 +1,153 @@
 # Django HTMX Event Organizer
 
-> Note to the candidate:
->
-> - This README file was taken from another project and partially updated. 
-> - Please update the README with the correct information (including any changes made to the technical details and usage) once you have completed the challenge and remove this note.
-> - Read the instruction for this challenge here : `_documentation\challenge_instructions.md`
+A simple Django application that demonstrates secure event management without requiring traditional user logins or email confirmations.  
 
-### Description
+## Table of Contents
+- [Django HTMX Event Organizer](#django-htmx-event-organizer)
+  - [Table of Contents](#table-of-contents)
+  - [Description](#description)
+  - [Features](#features)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Running the Application](#running-the-application)
+  - [Usage](#usage)
+    - [1. Creating a New Event (Organizer)](#1-creating-a-new-event-organizer)
+    - [2. Guest RSVP](#2-guest-rsvp)
+    - [3. Organizer/Admin Actions](#3-organizeradmin-actions)
+  - [Technical Details](#technical-details)
+  - [Technologies Used](#technologies-used)
+  - [Contribution](#contribution)
 
-This repo is a starting point for a simple Django app that allows users to securely manage events without requiring emails or logins.
-- Organiser can create events and share the event link with the guests.
-- Guests can RSVP to the event by providing their name and response.
-- Organiser receive a unique link to edit the event and participant's response.
-- Participants receive a unique link to edit their response.
+---
 
-An event managment app will in the future be added to the FlexUp app, but for the time being, this is a standalone project, used as a test for the candidates and as a "proof of concept" for the some of the features that will be implemented in the FlexUp app.
+## Description
+This repository is a starting point for a Django application that allows users to create and manage events without the need for logins or emails. The goal is to provide a secure yet streamlined way for event organizers and participants to interact:
 
+- **Organizer** creates events and shares a link with guests.
+- **Guests** RSVP (confirm, maybe, or decline) without needing an account.
+- **Organizer** has a unique link to edit the event and manage participants.
+- **Guests** have a unique link to edit their own responses.
 
-### Installation
+This project serves as:
+- A standalone proof of concept for features that may be integrated into the FlexUp application in the future.
+- A technical challenge for candidates evaluating how to work with Django and HTMX.
 
-- Install [uv](https://docs.astral.sh/uv/), [python](https://www.python.org/downloads/) and [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) on your machine
-- `git clone https://github.com/fabrizionastri/flexup-events` clone the repository to your local machine
-- `uv sync` to install the required dependencies and create the virtual environment
-- `python manage.py runserver` to start the server
+---
 
-### Access the App
-
-- Open browser on http://localhost:8000/ to see the app
-
-### Technical Details
-
-- This app is designed to be used without requiring any login or email.
-  - the app does not have a user database, so it does not store any user information.
-  - the app does not have a email service, so it does not send any email.
-- A single form is used to create, view and edit an object (event or participant).
-  - the style and read-only status of the form is based on the `data-readonly` variable, which is toggled by the `Edit` button, and is stored in memory (handled in JavaScript only in the browser).
-  - only the users with the correct link can edit the object. 
-  - edit authorisation is handle both at the front-end and back-end level.
-    - the `Edit` button is hidden if the user does not have the correct link.
-    - the back-end checks the link and the object id to authorise the edit.
-
-### Usage
-- Organiser can create an event by clicking on the "New event" button in the navbar, then filling the form and clicking on the "Create event" button.
-- Organiser is provided with 2 links and advised to store them in a safe place:
-  - **registration** link: `events.flexup.org/event/\<event_id\>/register` to share with the guests
-  - **admin** link: `events.flexup.org/event/\<event_id\>/admin/<event_admin_code\>` to manage the event and manage the participants' responses
-- Organiser can send the links by any means they prefer (email, WhatsApp, facebook, etc, etc.):
-  - the invitation link to the guests
-  - the edit link to any other event organizer/admin
-- When guests clicks on the invitation link, they are sent to the event registration page which contains the following:
-  1. `Event Details`: the event details at the top of the page (the event form, in read only mode)
-  2. `Responses` the list of current participants with their respective status (each row contains the response form, in read only mode, with the data of that participant)
-  3. `New response:` blank response form in edit mode at the bottom of the table, with the "Submit" and "Cancel" buttons
-  - available status for the guest are: `Confirmed`, `Maybe`, `Declined`
-- After submitting the response, the guest is provided with a unique link to edit their response and advised to store it in a safe place (this link is the only way for them to edit their response)
-- When the organiser clicks on the admin link, they are sent to the event admin page which contains the following:
-  1. `Event Details`: the event details at the top of the page (the event form, in edit mode, but with the `Edit` button visible)
-  2. `Responses` the list of current participants with their respective status (each row contains the response form, in edit mode, with the data of that participant) and an edit button for each participant
-  3. `New response:` blank response form in edit mode at the bottom of the table, with the "Submit" and "Cancel" buttons
-  - available status for the organiser are: `Confirmed`, `Maybe`, `Declined`, `Not responded`
-
-
-### Technologies Used
-
-- Django: The backend framework for developing the web application.
-- Django Templating Engine: For generating dynamic HTML content.
-- Bootstrap: For styling the web pages.
-- JavaScript: For client-side scripting.
-- SQLite (or other databases): Default database for Django.
+## Features
+- **No User Accounts or Emails**  
+  No login, password, or email verification required.
+- **Unique Event and Response Links**  
+  Each event and each participant response has a unique, secret link to enable secure editing.
+- **Inline Editing**  
+  Events and responses can be updated directly from the same page, leveraging HTMX for a smoother user experience.
+- **Simple Sharing**  
+  Share your event URL anywhere—email, social media, or messaging apps.
   
-### Contribution
+---
 
-If you'd like to contribute to this project:
+## Prerequisites
+- [Python](https://www.python.org/downloads/) (3.8+ recommended)
+- [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+- [uv](https://docs.astral.sh/uv/) (lightweight dependency manager)
 
-- Fork the repository
-- Create a new branch (git checkout -b feature-branch)
-- Make your changes
-- Commit your changes (git commit -m 'Add new feature')
-- Push to the branch (git push origin feature-branch)
-- Create a new Pull Request
+---
+
+## Installation
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/fabrizionastri/flexup-events
+   cd flexup-events
+   ```
+2. **Sync dependencies**:
+   ```bash
+   uv sync
+   ```
+   This will create and activate a virtual environment and install all required packages.
+
+---
+
+## Running the Application
+1. **Start the Django development server**:
+   ```bash
+   python manage.py runserver
+   ```
+2. **Access the application**:
+   Open your browser and go to [http://localhost:8000/](http://localhost:8000/) (or the address indicated in your terminal).
+
+---
+
+## Usage
+### 1. Creating a New Event (Organizer)
+- Click on **"New event"** in the navigation bar.
+- Fill out the form with event details.
+- Click **"Create event"**.
+
+You will receive **two links**:
+1. **Registration link** (e.g., `events.flexup.org/event/<event_slug>/register`)  
+   Share this link with guests.
+2. **Admin link** (e.g., `events.flexup.org/event/<event_slug>/admin/<event_admin_code>`)  
+   Keep this private; it allows you to edit the event and manage participants.
+
+### 2. Guest RSVP
+- When guests follow the **registration link**, they see:
+  1. **Event Details** (read-only)
+  2. **Responses** (list of participants who have responded, read-only)
+  3. **New Response Form** to submit their own RSVP  
+     - Possible statuses: **Confirmed**, **Maybe**, or **Declined**  
+     - Upon submitting, each guest is given a **unique link** to update their response in the future.
+
+### 3. Organizer/Admin Actions
+- Using the **admin link**, the organizer sees:
+  1. **Event Details** (in view mode by default, but can toggle edit mode with the edit button)
+  2. **Responses** (in view mode by default, but can toggle edit mode with an edit button for each participant)
+  3. **New Response Form** (if the organizer wants to add participants on their behalf)  
+- Admins only have all the status choices available to them: 
+  - the basic ones available to participants: **Confirmed**, **Maybe**, **Declined**
+  - additional ones, available only to admins: **Invited**, **Waiting list**
+
+---
+
+## Technical Details
+1. **No Email or User Login**  
+   - No user database or password management.
+   - No email service integrated.
+2. **Single Form Structure**  
+   - Event and participant forms can switch between read-only and edit modes using HTMX and JavaScript.
+   - The form’s read-only status is controlled by a `data-readonly` attribute and toggled in the browser.
+   - The `data-readonly` variable controls:
+     - the form's style
+     - the input's attributes (disabled, readonly)
+     - the visibility of the edit, save and cancel buttons
+3. **Unique Links for Edit Authorization**  
+   - Only users with the correct unique link can edit event details or participant responses.
+   - Both front-end (hiding buttons) and back-end (checking links and IDs) enforce authorization.
+
+---
+
+## Technologies Used
+- **Django** – Backend framework  
+- **Django Templating Engine** – Render dynamic HTML  
+- **HTMX** – Handling AJAX-like requests for partial page updates  
+- **Bootstrap** – CSS framework for styling and layout  
+- **JavaScript** – Client-side interactions and form handling  
+- **SQLite** (default) or any other Django-compatible database  
+
+---
+
+## Contribution
+Contributions and improvements are welcome!  
+1. **Fork** the repository.  
+2. Create a new branch:  
+   ```bash
+   git checkout -b feature-branch
+   ```
+3. Make and commit your changes:  
+   ```bash
+   git commit -m 'Add new feature'
+   ```
+4. Push to your branch:  
+   ```bash
+   git push origin feature-branch
+   ```
+5. Open a **Pull Request** describing your changes.
