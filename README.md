@@ -1,9 +1,16 @@
-# Django HTMX Event Organizer
+# FlexUp Events
+
+> Note to the candidate:
+>
+> - This README file was taken from another project and partially updated. 
+> - Please update the README with the correct information (including any changes made to the technical details and usage) once you have completed the challenge and remove this note.
+> - Read the instruction for this challenge here : `challenge_instructions.md`
+
 
 A simple Django application that demonstrates secure event management without requiring traditional user logins or email confirmations.  
 
 ## Table of Contents
-- [Django HTMX Event Organizer](#django-htmx-event-organizer)
+- [FlexUp Events](#flexup-events)
   - [Table of Contents](#table-of-contents)
   - [Description](#description)
   - [Features](#features)
@@ -18,21 +25,17 @@ A simple Django application that demonstrates secure event management without re
   - [Technologies Used](#technologies-used)
   - [Contribution](#contribution)
 
----
+
 
 ## Description
-This repository is a starting point for a Django application that allows users to create and manage events without the need for logins or emails. The goal is to provide a secure yet streamlined way for event organizers and participants to interact:
+This app allows users to create and manage events without the need for logins or emails. The goal is to provide a secure yet streamlined way for event organizers and participants to interact:
 
 - **Organizer** creates events and shares a link with guests.
 - **Guests** RSVP (confirm, maybe, or decline) without needing an account.
 - **Organizer** has a unique link to edit the event and manage participants.
 - **Guests** have a unique link to edit their own responses.
 
-This project serves as:
-- A standalone proof of concept for features that may be integrated into the FlexUp application in the future.
-- A technical challenge for candidates evaluating how to work with Django and HTMX.
 
----
 
 ## Features
 - **No User Accounts or Emails**  
@@ -44,14 +47,14 @@ This project serves as:
 - **Simple Sharing**  
   Share your event URL anywhere—email, social media, or messaging apps.
   
----
+
 
 ## Prerequisites
 - [Python](https://www.python.org/downloads/) (3.8+ recommended)
 - [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 - [uv](https://docs.astral.sh/uv/) (lightweight dependency manager)
 
----
+
 
 ## Installation
 1. **Clone the repository**:
@@ -65,7 +68,7 @@ This project serves as:
    ```
    This will create and activate a virtual environment and install all required packages.
 
----
+
 
 ## Running the Application
 1. **Start the Django development server**:
@@ -75,7 +78,7 @@ This project serves as:
 2. **Access the application**:
    Open your browser and go to [http://localhost:8000/](http://localhost:8000/) (or the address indicated in your terminal).
 
----
+
 
 ## Usage
 ### 1. Creating a New Event (Organizer)
@@ -88,6 +91,8 @@ You will receive **two links**:
    Share this link with guests.
 2. **Admin link** (e.g., `events.flexup.org/event/<event_slug>/admin/<event_admin_code>`)  
    Keep this private; it allows you to edit the event and manage participants.
+3. **Participant link** (e.g., `events.flexup.org/event/<event_slug>/participant/<participant_code>`)  
+   Each participant gets his own secret link to edit their response.
 
 ### 2. Guest RSVP
 - When guests follow the **registration link**, they see:
@@ -106,7 +111,7 @@ You will receive **two links**:
   - the basic ones available to participants: **Confirmed**, **Maybe**, **Declined**
   - additional ones, available only to admins: **Invited**, **Waiting list**
 
----
+
 
 ## Technical Details
 1. **No Email or User Login**  
@@ -123,7 +128,7 @@ You will receive **two links**:
    - Only users with the correct unique link can edit event details or participant responses.
    - Both front-end (hiding buttons) and back-end (checking links and IDs) enforce authorization.
 
----
+
 
 ## Technologies Used
 - **Django** – Backend framework  
@@ -133,7 +138,7 @@ You will receive **two links**:
 - **JavaScript** – Client-side interactions and form handling  
 - **SQLite** (default) or any other Django-compatible database  
 
----
+
 
 ## Contribution
 Contributions and improvements are welcome!  
