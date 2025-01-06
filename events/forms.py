@@ -1,5 +1,5 @@
 from django import forms
-from .models import Event, Participant
+from .models import Event, Response
 
 class EventForm(forms.ModelForm):
     class Meta:
@@ -17,8 +17,8 @@ class EventForm(forms.ModelForm):
 
         
 
-class ParticipantForm(forms.ModelForm):
+class ResponseForm(forms.ModelForm):
     class Meta:
-        model = Participant
+        model = Response
         fields = '__all__'
 
