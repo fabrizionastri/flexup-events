@@ -16,43 +16,47 @@
     <form method="POST" id="event-form" {% if event %} data-readonly="true" {% endif %}>
         {% csrf_token %}
         {{ form.as_p }}
-        
-        {# Save button, hidden in read-only mode #}
-        <div class="justify-content-between" id="button-container">
-            <button type="submit" id="save-button" > Save </button>
-            {% if event %}
-            <button type="button" id="delete-button" class="btn btn-danger" onclick="deleteEvent('{{ event.slug }}')">Delete</button>
-            {% else %}
-            <a href="/events/"><button type="button" id="cancel-button" class="btn btn-outline-secondary">Cancel</button></a>
-            
-            {% endif %}
+
+        {# Button container for edit mode: left group (Save, Cancel) and right group (Delete) #}
+        <div id="button-container" style="display: none; justify-content: space-between;">
+          <div class="left-buttons">
+                <button type="submit" id="save-button">Save</button>
+                <button type="button" id="cancel-button" class="btn btn-outline-secondary" onclick="cancelEditMode()" style="margin-left: 10px;">Cancel</button>
           </div>
+          <div class="right-buttons">
+                <button type="button" id="delete-button" class="btn btn-danger" onclick="deleteEvent('{{ event.slug }}')">Delete</button>
+          </div>
+        </div>
     </form>
         <p>data-readonly : <span id="is_readonly">Unknown</span></p>
 
-</div> 
+</div>
 
 <script>
   function toggleEditMode() {
     const form = document.getElementById('event-form');
     const buttonContainer = document.getElementById('button-container');
-    console.log('toggleEditMode to: ', form.getAttribute('data-readonly'));
-    // Toggle the data-readonly attribute
-    const isCurrentlyReadOnly = form.getAttribute('data-readonly') === 'true';
-    form.setAttribute('data-readonly', !isCurrentlyReadOnly);
+    const editButton = document.getElementById('edit-button');
+    if (form.getAttribute('data-readonly') === 'true') {
+      form.setAttribute('data-readonly', 'false');
+      Array.from(form.elements).forEach(element => {
+        if (element.name !== 'csrfmiddlewaretoken') { element.disabled = false; }
+      });
+      buttonContainer.style.display = 'flex';
+      if (editButton) { editButton.style.display = 'none'; }
+    }
+  }
 
-    // Update the id="is_readonly" span content
-    document.getElementById('is_readonly').innerText = !isCurrentlyReadOnly;
-
-    // Enable/disable fields accordingly
+  function cancelEditMode() {
+    const form = document.getElementById('event-form');
+    const buttonContainer = document.getElementById('button-container');
+    const editButton = document.getElementById('edit-button');
+    form.setAttribute('data-readonly', 'true');
     Array.from(form.elements).forEach(element => {
-      if (element.name !== 'csrfmiddlewaretoken') {
-        element.disabled = isCurrentlyReadOnly ? false : true;
-      }
+      if (element.name !== 'csrfmiddlewaretoken') { element.disabled = true; }
     });
-    
-    // Show/hide the button container
-    buttonContainer.style.display = isCurrentlyReadOnly ? 'flex' : 'none';
+    buttonContainer.style.display = 'none';
+    if (editButton) { editButton.style.display = 'inline-block'; }
   }
 
   function deleteEvent(slug) {
@@ -73,37 +77,34 @@
     }
   }
 
-
-  // On page load, if an event exists, ensure fields start disabled
+  // On page load, ensure fields start disabled and set buttonContainer display based on data-readonly
   document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('event-form');
     const buttonContainer = document.getElementById('button-container');
+    const editButton = document.getElementById('edit-button');
     if (form.getAttribute('data-readonly') === 'true') {
       Array.from(form.elements).forEach(element => {
         if (element.name !== 'csrfmiddlewaretoken') {
           element.disabled = true;
         }
       });
-    }
-    // update the id="is_readonly" span content with the current value of data-readonly
-    document.getElementById('is_readonly').innerText = form.getAttribute('data-readonly');
-    
-    console.log('slug:', document.getElementById('id_slug').value);
-    // Hide the button container initially it there is a slug
-    if (event.pk) {
-      console.log("Hiding button container");
       buttonContainer.style.display = 'none';
-    }
-    else {
-      console.log("Showing button container");
+      if (editButton) { editButton.style.display = 'inline-block'; }
+    } else {
       buttonContainer.style.display = 'flex';
     }
+
+    // update the id="is_readonly" span content with the current value of data-readonly
+    document.getElementById('is_readonly').innerText = form.getAttribute('data-readonly');
+
+    console.log('slug:', document.getElementById('id_slug').value);
+
     // Add event listener to the slug element
     const slugElement = document.getElementById('id_slug');
     if (slugElement) {
       slugElement.addEventListener('click', (event) => {
         event.preventDefault();
-        const eventurl = window.location.href + event.target.value; 
+        const eventurl = window.location.href + event.target.value;
         copyToClipboard(eventurl);
         showNotification('URL copied to clipboard!');
       });

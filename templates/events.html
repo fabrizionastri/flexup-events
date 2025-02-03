@@ -13,7 +13,7 @@
         <thead>
             <tr>
                 {% for column in columns %}<th data-name="{{ column.name }}">{{ column.title }}</th>{% endfor %}
-                <th>Actions</th>
+                <!-- Remove Actions column header -->
             </tr>
         </thead>
         <tbody>
@@ -21,11 +21,7 @@
                 <tr data-slug="{{ row.slug }}">
                     {% comment %} Note: get_idem is a custom filter defined in custom_filters.py {% endcomment %}
                     {% for col in columns %}<td>{{ row|get_item:col.name }}</td>{% endfor %}
-                    <td>
-                        {% csrf_token %}
-                        <a href="{% url 'event_view' row.slug %}"><i class="bi bi-eye"></i></a>
-                        <a href="#" onclick="deleteEvent('{{ row.slug }}')" class="ms-3"><i class="bi bi-trash"></i></a>
-                    </td>
+                    <!-- Remove Actions column data -->
                 </tr>
             {% endfor %}
         </tbody>
@@ -90,15 +86,11 @@
                 row.addEventListener('click', () => {
                     const slug = row.getAttribute('data-slug');
                     if (slug) {
-                        // const currentUrl = new URL(window.location.href);
-                        // currentUrl.pathname += `${slug}/`;
-                        // window.location.href = currentUrl.href;
-                        const currentUrl = "http://127.0.0.1:5000/event/" + slug + '/';
+                        // Use relative URL instead of absolute URL with port 5000
+                        const currentUrl = "/event/" + slug + '/';
                         console.log("currentUrl", currentUrl);
-                        window.location.href = currentUrl; 
-
+                        window.location.href = currentUrl;
                     }
-                    
                 });
             });
         });
@@ -106,5 +98,3 @@
     </script>
 
 {% endblock content %}
-
-
